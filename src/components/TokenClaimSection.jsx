@@ -4,7 +4,6 @@ import { ethers } from "ethers";
 const TokenClaimSection = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [account, setAccount] = useState(null);
-
   // Função para conectar à MetaMask
   const connectToMetaMask = async () => {
     try {
@@ -32,7 +31,6 @@ const TokenClaimSection = () => {
       setIsConnecting(false);
     }
   };
-
   // Função para realizar o claim dos tokens
   const handleClaimToken = async () => {
     try {
@@ -41,15 +39,12 @@ const TokenClaimSection = () => {
         alert("Please connect to MetaMask first.");
         return;
       }
-
       // Cria provedor e assinador a partir do MetaMask
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-
       // Endereço e ABI do contrato
       const contractAddress = "0xb13a636b18758662e7f88c64060a7a43Bd26b76d"; // Substitua pelo endereço real do contrato
       const contractABI = [
-        
         {
           inputs: [
             { internalType: "address", name: "to", type: "address" },
@@ -81,7 +76,6 @@ const TokenClaimSection = () => {
       alert("100 FNY tokens claimed successfully!");
     } catch (error) {
       console.error("Error claiming tokens:", error);
-
       // Feedback de erro detalhado
       if (error.code === 4001) {
         alert("Transaction rejected by the user.");
@@ -90,7 +84,6 @@ const TokenClaimSection = () => {
       }
     }
   };
-
   return (
     <div className="text-center">
       <button
@@ -107,5 +100,4 @@ const TokenClaimSection = () => {
     </div>
   );
 };
-
 export default TokenClaimSection;
