@@ -1,7 +1,7 @@
 
 import Header from './components/Header';
 import TransactionSpace from './components/TransactionSpace';
-import NFTSection from './components/NFTSection';
+import TokenClaimSection from './components/TokenClaimSection';
 import Footer from './components/Footer';
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8">
         <TransactionSpace />
-        <NFTSection />
+        <TokenClaimSection />
       </main>
       <Footer />
     </div>

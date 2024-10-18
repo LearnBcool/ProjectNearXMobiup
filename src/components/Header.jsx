@@ -13,7 +13,7 @@ const Header = () => {
           <MessageCircle className="mr-2" size={20} />
           Telegram
         </a>
-        <a href="/docs" target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-cyan-300 transition-colors">
+        <a href="https://www.gitbook.com/" target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-cyan-300 transition-colors">
           <FileText className="mr-2" size={20} />
           Docs
         </a>

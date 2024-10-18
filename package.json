@@ -10,12 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@walletconnect/web3-provider": "^1.8.0",
     "autoprefixer": "^10.4.20",
     "ethers": "^6.13.4",
     "lucide-react": "^0.453.0",
     "postcss": "^8.4.47",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "wagmi": "^2.12.19",
+    "web3": "^4.13.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
