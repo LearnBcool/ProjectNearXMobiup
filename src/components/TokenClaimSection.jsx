@@ -10,6 +10,7 @@ const TokenClaimSection = () => {
     try {
       if (window.ethereum) {
         setIsConnecting(true);
+        // Usar eth_accounts para obter contas
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
@@ -17,7 +18,9 @@ const TokenClaimSection = () => {
         setIsConnecting(false);
 
         // Garantir que o usuário está na rede correta
-        const networkId = await window.ethereum.request({ method: "net_version" });
+        const networkId = await window.ethereum.request({
+          method: "net_version",
+        });
         if (networkId !== "80002") {
           alert("Please connect to the Polygon Amoy Testnet!");
         }
@@ -46,6 +49,7 @@ const TokenClaimSection = () => {
       // Endereço e ABI do contrato
       const contractAddress = "0xb13a636b18758662e7f88c64060a7a43Bd26b76d"; // Substitua pelo endereço real do contrato
       const contractABI = [
+        
         {
           inputs: [
             { internalType: "address", name: "to", type: "address" },
@@ -59,11 +63,18 @@ const TokenClaimSection = () => {
       ];
 
       // Instância do contrato
-      const contract = new ethers.Contract(contractAddress, contractABI, signer);
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
 
       // Valor do claim (100 tokens)
-      const amountToClaim = ethers.utils.parseUnits("100", 18);
-      const tx = await contract.claim(account, amountToClaim); // Chama a função claim
+      const to = account; // O próprio usuário
+      const amount = ethers.utils.parseUnits("100", 18); // 100 tokens com 18 casas decimais
+
+      // Chama a função claim passando o endereço e valor
+      const tx = await contract.claim(to, amount);
 
       // Aguarda confirmação da transação
       await tx.wait();
