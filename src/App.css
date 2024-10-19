@@ -40,3 +40,26 @@
 .read-the-docs {
   color: #888;
 }
+
+
+/* Transações */
+.transaction-list {
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: slide 10s linear infinite;
+}
+
+.transaction-item {
+  margin-right: 50px; /* Espaçamento entre as transações */
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+

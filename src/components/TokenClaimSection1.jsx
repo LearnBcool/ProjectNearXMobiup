@@ -1,23 +1,25 @@
 import { useState } from "react";
 import { ethers } from "ethers";
 import ContractData from "./abis/ContractData.json";
-import TransactionSpace from "./TransactionSpace"; // Importe o componente TransactionSpace
 
 const TokenClaimSection = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [account, setAccount] = useState(null);
-  const [transactions, setTransactions] = useState([]); // Estado para armazenar transações
 
+  // Função para conectar à MetaMask
   const connectToMetaMask = async () => {
     try {
       if (window.ethereum) {
         setIsConnecting(true);
+
+        // Usar eth_accounts para obter contas
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
         setAccount(accounts[0]);
         setIsConnecting(false);
 
+        // Garantir que o usuário está na rede correta
         const networkId = await window.ethereum.request({
           method: "net_version",
         });
@@ -35,38 +37,40 @@ const TokenClaimSection = () => {
 
   const handleClaimToken = async () => {
     try {
+      // Verifica se MetaMask está conectada
       if (!account) {
         alert("Please connect to MetaMask first.");
         return;
       }
 
+      // Cria provedor e assinador a partir do MetaMask
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
-      const contractAddress = ContractData.contractAddress; 
-      const contractABI = ContractData.abi;
 
-      const contract = new ethers.Contract(contractAddress, contractABI, signer);
+      // Endereço e ABI do contrato
+      const contractAddress = ContractData.contractAddress; // Substitua pelo endereço real do contrato
+      const contractABI = ContractData.abi; // Substitua pela ABI do contrato
+
+      // Instância do contrato
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+
       console.log("Connected");
-
+      
+      // Valor do claim (100 tokens)
       const amountToClaim = ethers.parseUnits("100", 18);
-      const tx = await contract.claim(account, amountToClaim); 
+      const tx = await contract.claim(account, amountToClaim); // Chama a função claim
 
-      // Aguarda a confirmação da transação
-      const receipt = await tx.wait();
-      const txHash = receipt.transactionHash;
-
-      // Adiciona a transação ao estado (hash e os primeiros 7 dígitos do endereço)
-      setTransactions((prev) => [
-        ...prev,
-        {
-          hash: txHash,
-          shortAddress: account.slice(0, 7) // Apenas os primeiros 7 dígitos
-        }
-      ]);
-
+      // Aguarda confirmação da transação
+      await tx.wait();
       alert("100 FNY tokens claimed successfully!");
     } catch (error) {
       console.error("Error claiming tokens:", error);
+
+      // Feedback de erro detalhado
       if (error.code === 4001) {
         alert("Transaction rejected by the user.");
       } else {
@@ -88,10 +92,7 @@ const TokenClaimSection = () => {
           ? "Claim 100 FNY Tokens"
           : "Connect to MetaMask"}
       </button>
-      <TransactionSpace transactions={transactions} />
     </div>
   );
 };
-
 export default TokenClaimSection;
-
