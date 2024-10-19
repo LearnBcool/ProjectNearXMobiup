@@ -38,4 +38,3 @@ TransactionSpace.propTypes = {
 };
 
 export default TransactionSpace;
-
