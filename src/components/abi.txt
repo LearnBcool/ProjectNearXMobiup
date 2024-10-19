@@ -1,0 +1,29 @@
+ {
+          inputs: [
+            { internalType: "address", name: "to", type: "address" },
+            { internalType: "uint256", name: "amount", type: "uint256" },
+          ],
+          name: "claim",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+
+
+
+{/*mostrando na tela para o usuário;*/}
+
+      {/* Mostrar o endereço da conta conectada */}
+      {account && <p>Connected to: {account}</p>}
+      {/* Mostrar feedback de confirmação */}
+      {account && <p>100 FNY tokens claimed successfully!</p>}
+      {/* Mostrar feedback de erro */}
+      {account && <p>Failed to claim tokens.</p>}
+      {/* Mostrar feedback de transação pendente */}
+      {account && <p>Transaction pending...</p>}
+      {/* Mostrar feedback de transação rejeitada */}
+      {account && <p>Transaction rejected by the user.</p>}
+      {/* Mostrar feedback de transação cancelada */}
+
+
+  

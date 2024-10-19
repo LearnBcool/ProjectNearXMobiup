@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { ethers } from "ethers";
+import ContractData from "./abis/ContractData.json";
 
 const TokenClaimSection = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [account, setAccount] = useState(null);
+
   // Função para conectar à MetaMask
   const connectToMetaMask = async () => {
     try {
       if (window.ethereum) {
         setIsConnecting(true);
+
         // Usar eth_accounts para obter contas
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
@@ -31,7 +34,7 @@ const TokenClaimSection = () => {
       setIsConnecting(false);
     }
   };
-    
+
   const handleClaimToken = async () => {
     try {
       // Verifica se MetaMask está conectada
@@ -43,25 +46,19 @@ const TokenClaimSection = () => {
       // Cria provedor e assinador a partir do MetaMask
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
-      
+
       // Endereço e ABI do contrato
-      const contractAddress = "0xb13a636b18758662e7f88c64060a7a43Bd26b76d"; // Substitua pelo endereço real do contrato
-      const contractABI = [
-        {
-          inputs: [
-            { internalType: "address", name: "to", type: "address" },
-            { internalType: "uint256", name: "amount", type: "uint256" },
-          ],
-          name: "claim",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-      ];
+      const contractAddress = ContractData.contractAddress; // Substitua pelo endereço real do contrato
+      const contractABI = ContractData.abi; // Substitua pela ABI do contrato
+
       // Instância do contrato
-      const contract = new ethers.Contract(contractAddress, contractABI, signer);
-      
-      console.log("Connected")
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+
+      console.log("Connected");
       // Valor do claim (100 tokens)
       const amountToClaim = ethers.parseUnits("100", 18);
       const tx = await contract.claim(account, amountToClaim); // Chama a função claim
@@ -80,7 +77,6 @@ const TokenClaimSection = () => {
       }
     }
   };
-
 
   return (
     <div className="text-center">
