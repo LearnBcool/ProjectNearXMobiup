@@ -31,7 +31,7 @@ const TokenClaimSection = () => {
       setIsConnecting(false);
     }
   };
-  // Função para realizar o claim dos tokens
+    
   const handleClaimToken = async () => {
     try {
       // Verifica se MetaMask está conectada
@@ -39,9 +39,11 @@ const TokenClaimSection = () => {
         alert("Please connect to MetaMask first.");
         return;
       }
+
       // Cria provedor e assinador a partir do MetaMask
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      
       // Endereço e ABI do contrato
       const contractAddress = "0xb13a636b18758662e7f88c64060a7a43Bd26b76d"; // Substitua pelo endereço real do contrato
       const contractABI = [
@@ -56,26 +58,20 @@ const TokenClaimSection = () => {
           type: "function",
         },
       ];
-
       // Instância do contrato
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
-
+      const contract = new ethers.Contract(contractAddress, contractABI, signer);
+      
+      console.log("Connected")
       // Valor do claim (100 tokens)
-      const to = account; // O próprio usuário
-      const amount = ethers.utils.parseUnits("100", 18); // 100 tokens com 18 casas decimais
-
-      // Chama a função claim passando o endereço e valor
-      const tx = await contract.claim(to, amount);
+      const amountToClaim = ethers.parseUnits("100", 18);
+      const tx = await contract.claim(account, amountToClaim); // Chama a função claim
 
       // Aguarda confirmação da transação
       await tx.wait();
       alert("100 FNY tokens claimed successfully!");
     } catch (error) {
       console.error("Error claiming tokens:", error);
+
       // Feedback de erro detalhado
       if (error.code === 4001) {
         alert("Transaction rejected by the user.");
@@ -84,6 +80,8 @@ const TokenClaimSection = () => {
       }
     }
   };
+
+
   return (
     <div className="text-center">
       <button
