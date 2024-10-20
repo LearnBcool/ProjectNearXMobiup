@@ -2,5 +2,14 @@
 src = "src"
 out = "out"
 libs = ["lib"]
+private_key = { env = "PRIVATE_KEY" }  # Usando a variável de ambiente corretamente
+etherscan_api_key = "Q86W9YP6FRMZRGY91W9VX2HW5QF4VHAVA4"
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+
+[rpc_endpoints]
+polygon_amoy_testnet = "https://rpc-amoy.polygon.technology/"
+
+[profile.default.networks]
+polygon_amoy = { chain_id = 80002 }
+
